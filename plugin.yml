@@ -1,0 +1,25 @@
+name: RandomTP
+main: Minifixio\randomtp\RandomTP
+version: 0.0.1
+api: [1.0.0, 1.1.0]
+description: RandomTP teleport a player in a random position in the world.
+author: Minifixio
+website: https://www.youtube.com/channel/UCV6xZv2ZGU36SESaipCEjQw
+
+commands:
+ rtpset:
+  description: Set a random spawn position at current player position.
+  usage: "Usage: /rtpset"
+  permission: randomtp.command.opcommands
+ rtpreset:
+  description: Reset all random spawn positions.
+  usage: "Usage: /rtpreset"
+  permission: randomtp.command.opcommands
+ rtpinfo:
+  description: More informations about RandomTP.
+  usage: "Usage: /rtpinfo"
+
+permissions:
+ randomtp.command.opcommands:
+  description: "RandomTP OP permissions"
+  default: op
