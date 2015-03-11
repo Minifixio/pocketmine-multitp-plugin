@@ -9,7 +9,7 @@
  * I do not think that you will read this notes in the code but you can leave a comment in PocketMine for my first plugin !
  */
 
-namespace Minifixio\randomtp;
+namespace Minifixio\multitp;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\Player;
@@ -21,9 +21,9 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\utils\Config;
 
-use Minifixio\randomtp\utils\PluginUtils;
+use Minifixio\multitp\utils\PluginUtils;
 
-class RandomTP extends PluginBase implements Listener {
+class MultiTP extends PluginBase implements Listener {
 	
 	public $positions = array();
 	
@@ -60,7 +60,7 @@ class RandomTP extends PluginBase implements Listener {
 	public function onEnable(){
 		//Load Plugin
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
-		PluginUtils::logOnConsole(">> Load RandomTP plugin by Minifixio ...");
+		PluginUtils::logOnConsole(">> Load MultiTP plugin by Minifixio ...");
 		
 		//Create data folder (for positions.yml)
 		@mkdir($this->getDataFolder());
@@ -109,7 +109,7 @@ class RandomTP extends PluginBase implements Listener {
 			if(count($this->positions) == 0){
 				
 				//If there are no positions set :
-				$event->getPlayer()->sendMessage("[RandomTP] Sorry, there is no teleport position yet set");
+				$event->getPlayer()->sendMessage("[MultiTP] Sorry, there is no teleport position yet set");
 			}
 			else{
 				
@@ -132,26 +132,26 @@ class RandomTP extends PluginBase implements Listener {
 		switch($command->getName()){
 			
 			//rtpset command to set a random spawn position
-			case "rtpset":
+			case "mtpset":
 				$this->addNewLocation($sender->getLocation());
-				$sender->sendMessage("[RandomTP] A new teleportation target was added at your position !");
-				$sender->sendMessage("[RandomTP] There are : " . $this->getNumberOfPositions() . " teleportation targets.");
+				$sender->sendMessage("[MultiTP] A new teleportation target was added at your position !");
+				$sender->sendMessage("[MultiTP] There are : " . $this->getNumberOfPositions() . " teleportation targets.");
 				return true;
 				
 			//rtpreset command to reset all random spawn positions
-			case "rtpreset":
+			case "mtpreset":
 				$this->resetPositions();
-				$sender->sendMessage("[RandomTP] All random spawn positions have been removed!");
+				$sender->sendMessage("[MultiTP] All random spawn positions have been removed!");
 				return true;
 				
 			//rtpinfo to have all informations about the plugin :)
-			case "rtpinfo":
-				$sender->sendMessage("[RandomTP] This plugin was created by Minifixio. I've got a Youtube channel, you can subscribe :)");
-				$sender->sendMessage("[RandomTP] Commands : /rtpset ( to set a random spawn position )  and  /rtpreset ( to reset all random spawn positions.");
-				$sender->sendMessage("[RandomTP] The default teleporting block is the sponge block, but you can change this in the code of the plugin.");
-				$sender->sendMessage("[RandomTP] Perhaps there will be an update to modify the block of teleportation.");
+			case "mtpinfo":
+				$sender->sendMessage("[MultiTP] This plugin was created by Minifixio. I've got a Youtube channel, you can subscribe :)");
+				$sender->sendMessage("[MultiTP] Commands : /mtpset ( to set a random spawn position )  and  /mtpreset ( to reset all random spawn positions.");
+				$sender->sendMessage("[MultiTP] The default teleporting block is the sponge block, but you can change this in the code of the plugin.");
+				$sender->sendMessage("[MultiTP] Perhaps there will be an update to modify the block of teleportation.");
                 return true;
-				$sender->sendMessage("[RandomTP] If you have suggestions or bugs, please report this to me !");
+				$sender->sendMessage("[MultiTP] If you have suggestions or bugs, please report this to me !");
 				
 			default:
 				return false;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Minifixio\randomtp\utils;
+namespace Minifixio\multitp\utils;
 
 use pocketmine\Server;
 
@@ -14,7 +14,7 @@ class PluginUtils{
 	 */
 	public static function logOnConsole($message){
 		$logger = Server::getInstance()->getLogger();
-		$logger->info("[RandomTP] " . $message);
+		$logger->info("[MultiTP] " . $message);
 	}
 }
 
