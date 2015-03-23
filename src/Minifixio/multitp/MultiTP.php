@@ -60,7 +60,7 @@ class MultiTP extends PluginBase implements Listener {
 	public function onEnable(){
 		//Load Plugin
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
-		PluginUtils::logOnConsole(">> Load MultiTP plugin by Minifixio ...");
+		$this->getLogger()->info("[MultiTP] >> Load MultiTP plugin by Minifixio ...");
 		
 		//Create data folder (for positions.yml)
 		@mkdir($this->getDataFolder());
