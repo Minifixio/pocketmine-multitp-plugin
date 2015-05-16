@@ -1,6 +1,6 @@
 name: MultiTP
 main: Minifixio\multitp\MultiTP
-version: 1.0.0
+version: 2.0.0
 api: 1.8.0
 description: MultiTP teleport a player in a random position in the world.
 author: Minifixio

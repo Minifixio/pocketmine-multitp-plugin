@@ -20,6 +20,12 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\utils\Config;
+use pocketmine\Server;
+
+use pocketmine\tile\Tile;
+use pocketmine\item\Item;
+use pocketmine\block\Block;
+use pocketmine\tile\Sign;
 
 use Minifixio\multitp\utils\PluginUtils;
 
@@ -32,9 +38,20 @@ class MultiTP extends PluginBase implements Listener {
 	/**
 	* @return Position a random position based on current position array
 	*/
-	public function getRandomLocation(){
-		$numPos = mt_rand(1, count($this->positions));
-		return $this->positions[$numPos - 1];
+	public function getRandomLocation($worldName){
+		
+		$worldPositions = array();
+		
+		foreach ($this->positions as $position){
+			if($position->getLevel()->getName() == $worldName){
+				array_push($worldPositions, $position);
+			}
+		}
+		if(count($worldPositions) == 0){
+			return NULL;
+		}
+		$numPos = mt_rand(1, count($worldPositions));
+		return $worldPositions[$numPos - 1];
 	}
 	
 	/**
@@ -114,8 +131,34 @@ class MultiTP extends PluginBase implements Listener {
 			else{
 				
 				//Teleport sender to a random position
-				$event->getPlayer()->teleport($this->getRandomLocation());
+				$event->getPlayer()->teleport($this->getRandomLocation($event->getPlayer()->getLevel()->getName()));
 				$event->getPlayer()->sendMessage("Teleporting...");
+			}
+		}
+		else
+		if($event->getBlock()->getID() == Item::SIGN_POST || $event->getBlock()->getID() == Block::SIGN_POST || $event->getBlock()->getID() == Block::WALL_SIGN){
+			$sign = $event->getPlayer()->getLevel()->getTile($event->getBlock());
+			if(!($sign instanceof Sign)){
+				return;
+			}
+			$sign = $sign->getText();
+			if($sign[0]=='[MultiTP]'){
+				if(empty($sign[1]) !== true){
+					$worldName = $sign[1];
+					$event->getPlayer()->sendMessage("[MultiTP] Teleportation to '".$worldName."'");
+					if(Server::getInstance()->loadLevel($worldName)){
+						$targetPosition = $this->getRandomLocation($worldName);
+						if($targetPosition == NULL){
+							$event->getPlayer()->sendMessage("[MultiTP] No random location found in '".$worldName."'. Teleporting to its spawn.");
+							$event->getPlayer()->teleport(Server::getInstance()->getLevelByName($worldName)->getSafeSpawn());
+						}
+						else{
+							$event->getPlayer()->teleport($targetPosition);
+						}
+					}else{
+						$event->getPlayer()->sendMessage("[MultiTP] World '".$worldName."' doesn't exist.");
+					}
+				}
 			}
 		}
 	}
